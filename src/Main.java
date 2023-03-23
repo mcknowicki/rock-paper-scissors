@@ -3,46 +3,63 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
-        int rounds = 3, usersPoints = 0, computersPoints = 0;
+        int rounds = 3, usersWins = 0, computersWins = 0;
+        boolean userWantsToPlay = true;
 
-        for(int i = 0; i < rounds; i++) {
-            System.out.println("Type your choice (rock, paper, scissors):");
-            String userChoice = scanner.nextLine();
+        while (userWantsToPlay) {
+            int usersPoints = 0, computersPoints = 0;
+            boolean endOfGame = false;
 
-            int randomNumber = random.nextInt(3);
-            String computerChoice;
+            while (!endOfGame) {
+                System.out.println("Type your choice (rock, paper, scissors):");
+                String userChoice = scanner.nextLine();
 
-            if (randomNumber == 0) {
-                computerChoice = "rock";
-            } else if (randomNumber == 1) {
-                computerChoice = "paper";
-            } else{
-                computerChoice = "scissors";
+                int randomNumber = random.nextInt(3);
+                String computerChoice;
+
+                if (randomNumber == 0) {
+                    computerChoice = "rock";
+                } else if (randomNumber == 1) {
+                    computerChoice = "paper";
+                } else {
+                    computerChoice = "scissors";
+                }
+
+                System.out.println(userChoice + " vs " + computerChoice);
+
+                if (userChoice.equals(computerChoice)) {
+                    System.out.println("Draw");
+                } else if (Methods.didPlayerWin(userChoice, computerChoice)) {
+                    usersPoints++;
+                    System.out.println("You beat the computer");
+                    System.out.println("The score is " + usersPoints + ":" + computersPoints);
+                } else {
+                    computersPoints ++;
+                    System.out.println("The computer beat you");
+                    System.out.println("The score is " + usersPoints + ":" + computersPoints);
+                }
+
+                if (usersPoints == rounds) {
+                    endOfGame = true;
+                    usersWins ++;
+                    System.out.println("Congratulations! You won the game :))");
+                } else if (computersPoints == rounds) {
+                    endOfGame = true;
+                    computersWins ++;
+                    System.out.println("You lose the game, better luck next time :((");
+                }
             }
 
-            System.out.println(userChoice + " vs " + computerChoice);
-
-            if (userChoice.equals(computerChoice)) {
-                System.out.println("Draw");
-            } else if (Methods.didPlayerWin(userChoice, computerChoice)) {
-                usersPoints ++;
-                System.out.println("You win");
-                System.out.println("The score is " + usersPoints + ":" + computersPoints);
-            } else {
-                System.out.println("You lose");
-                System.out.println("The score is " + usersPoints + ":" + computersPoints);
+            System.out.println("Do you want to play one more time? (Y/N)");
+            String usersAnswer = scanner.nextLine();
+            if (usersAnswer.equals("y") || usersAnswer.equals("Y")) {
+                userWantsToPlay = true;
+            } else if (usersAnswer.equals("n") || usersAnswer.equals("N")) {
+                userWantsToPlay = false;
             }
-//liczenie punktów
-//zapytanie czy chce zagrać ponownie (ale jeszcze się nad tym zastanowię)
-//czy używa dwa razy tej samej figury, jeśli tak, załóż, że nie weźmie jej trzeci raz, jeśli znowu ją weźmie, załóż to ponownie
-//jeśli powtarza swoją figurę po zwycięstwie, uznaj, że znowu to zrobi przy innej figurze
-//czy zmienia figury według schematu rock, paper, scissors lub odwrotnego, jeśli tak, rób na odwrót
-//czy zmienia figury wedlug odwrotnego schematu, jeśli tak, powtórz jego ruch
-//czy stosuje schemat zmiany figur zależnie od swojej ostatniej figury lub figury komputera
         }
     }
 }
